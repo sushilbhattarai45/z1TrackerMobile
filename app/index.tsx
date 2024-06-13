@@ -9,6 +9,7 @@ import {
   Modal,
   Pressable,
   Dimensions,
+  KeyboardAvoidingView,
 } from "react-native";
 // import LottieView from "lottie-react-native";
 import colors from "./components/colors";
@@ -32,22 +33,23 @@ const Login = () => {
         flex: 1,
       }}
     >
-      <View
-        style={{
-          backgroundColor: colors.red,
-          flex: 100,
-
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
         <View
           style={{
-            justifyContent: "center",
-            flex: 0.6,
+            backgroundColor: colors.red,
+            flex: 1,
+
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          {/* <LottieView
+          <View
+            style={{
+              justifyContent: "center",
+              flex: 0.6,
+            }}
+          >
+            {/* <LottieView
             source={require("../assets/lottie/bikemoving.json")}
             autoPlay
             loop
@@ -57,167 +59,170 @@ const Login = () => {
               alignSelf: "center",
             }}
           /> */}
-        </View>
+          </View>
 
-        <View
-          style={{
-            flex: 0.4,
-            padding: 20,
-            backgroundColor: colors.white,
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
-          }}
-        >
           <View
             style={{
-              marginTop: 30,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 18,
-                color: colors.darkGrey,
-                fontWeight: "900",
-              }}
-            >
-              Let the Tracking Journey {"\n"}Begin!!
-            </Text>
-          </View>
-          <View
-            style={{
-              marginTop: 20,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 14,
-                color: colors.grey,
-                fontWeight: "600",
-              }}
-            >
-              Enter your Phone Number{" "}
-            </Text>
-          </View>
-          <View
-            style={
-              {
-                //   marginTop: 10,
-              }
-            }
-          >
-            <Text
-              style={{
-                fontSize: 12,
-                color: "gray",
-                fontWeight: "500",
-              }}
-            >
-              We will send you a One Time Password to the number!
-            </Text>
-          </View>
-          <View
-            style={{
-              marginTop: 10,
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "row",
+              opacity: modalVisible ? 0.8 : 1,
+              flex: 0.4,
+              padding: 20,
+              backgroundColor: colors.white,
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
             }}
           >
             <View
               style={{
-                width: 55,
-                height: 55,
-                borderRadius: 5,
-                borderColor: "gray",
-                borderWidth: 1,
-                justifyContent: "center",
-                alignItems: "center",
-
-                padding: 10,
+                marginTop: 30,
               }}
             >
-              <Image
-                source={require("../assets/images/flag.png")}
-                style={{ width: 30, height: 30 }}
-              />
-            </View>
-            <View
-              style={{
-                flex: 1,
-              }}
-            >
-              <TextInput
-                style={{
-                  marginLeft: 5,
-                  height: 55,
-                  borderColor: "gray",
-                  borderWidth: 1,
-                  padding: 10,
-                  paddingLeft: 20,
-                  borderRadius: 10,
-                }}
-                placeholder="Enter your Phone Number"
-              />
-            </View>
-          </View>
-          <View
-            style={{
-              marginTop: 10,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 12,
-                color: colors.grey,
-              }}
-            >
-              By continuing, you are indicating that you agree to the
               <Text
                 style={{
-                  color: colors.driveGreen,
+                  fontSize: 18,
+                  color: colors.darkGrey,
+                  fontWeight: "900",
+                }}
+              >
+                Let the Tracking Journey {"\n"}Begin!!
+              </Text>
+            </View>
+            <View
+              style={{
+                marginTop: 20,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: colors.grey,
                   fontWeight: "600",
                 }}
               >
-                {" "}
-                Terms and Conditions and Privacy Policy
+                Enter your Phone Number{" "}
               </Text>
-            </Text>
-          </View>
-          <View
-            style={{
-              marginTop: 10,
-            }}
-          >
-            <Pressable
-              onPress={() => {
-                console.log("Hello");
-
-                setModalVisible(true);
-              }}
+            </View>
+            <View
+              style={
+                {
+                  //   marginTop: 10,
+                }
+              }
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: "gray",
+                  fontWeight: "500",
+                }}
+              >
+                We will send you a One Time Password to the number!
+              </Text>
+            </View>
+            <View
               style={{
-                backgroundColor: "#243142",
-                padding: 10,
-                height: 52,
                 marginTop: 10,
-                marginHorizontal: 5,
-                borderRadius: 10,
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                justifyContent: "space-between",
+                flexDirection: "row",
+              }}
+            >
+              <View
+                style={{
+                  width: 55,
+                  height: 55,
+                  borderRadius: 5,
+                  borderColor: "gray",
+                  borderWidth: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+
+                  padding: 10,
+                }}
+              >
+                <Image
+                  source={require("../assets/images/flag.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                }}
+              >
+                <TextInput
+                  style={{
+                    marginLeft: 5,
+                    height: 55,
+                    borderColor: "gray",
+                    borderWidth: 1,
+                    padding: 10,
+                    paddingLeft: 20,
+                    borderRadius: 10,
+                  }}
+                  placeholder="Enter your Phone Number"
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                marginTop: 10,
               }}
             >
               <Text
                 style={{
-                  color: "white",
-                  fontSize: 18,
+                  fontSize: 12,
+                  color: colors.grey,
                 }}
               >
-                Continue
+                By continuing, you are indicating that you agree to the
+                <Text
+                  style={{
+                    color: colors.driveGreen,
+                    fontWeight: "600",
+                  }}
+                >
+                  {" "}
+                  Terms and Conditions and Privacy Policy
+                </Text>
               </Text>
-            </Pressable>
+            </View>
+            <View
+              style={{
+                marginTop: 10,
+              }}
+            >
+              <Pressable
+                onPress={() => {
+                  console.log("Hello");
+
+                  setModalVisible(true);
+                }}
+                style={{
+                  backgroundColor: "#243142",
+                  padding: 10,
+                  height: 52,
+                  marginTop: 10,
+                  marginHorizontal: 5,
+                  borderRadius: 10,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 18,
+                  }}
+                >
+                  Continue
+                </Text>
+              </Pressable>
+            </View>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
+
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -452,11 +457,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
 
-    flex: 1,
     alignItems: "center",
   },
   modalView: {
     margin: 20,
+    marginTop: Dimensions.get("window").height / 5,
     width: Dimensions.get("window").width - 50,
     height: 300,
     backgroundColor: "white",
