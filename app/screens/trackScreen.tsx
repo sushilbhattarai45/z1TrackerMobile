@@ -4,6 +4,7 @@ import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LOCATION_TASK_NAME = "background-location-task";
 
@@ -15,9 +16,34 @@ TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
   if (data) {
     const { locations } = data;
     console.log(locations[0]);
+    sendMyLocation({
+      locations: locations[0],
+      number: "9846761072",
+    });
+
     // sendPostRequest(locations[0]);
   }
 });
+
+const sendMyLocation = async (data: { locations: any; number: string }) => {
+  try {
+    let number = await AsyncStorage.getItem("number");
+    const resp = await axios.get(
+      process.env.EXPO_PUBLIC_URL +
+        "?lat=" +
+        data.locations.coords.latitude +
+        "&lon=" +
+        data.locations.coords.longitude +
+        "&timestamp=" +
+        Date.now() +
+        "&id=" +
+        number
+    );
+    console.log(resp.status);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 // const sendPostRequest = async (data: unknown) => {
 //   try {
@@ -33,10 +59,12 @@ TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
 //   }
 // };
 
-export default function App() {
+export default function TrackScreen() {
   const [status, setStatus] = useState("stopped");
+  const [number, setNumber] = useState<string | null>("");
 
   useEffect(() => {
+    checkLogin();
     checkRegistry();
     requestPermissionsAsync();
 
@@ -44,6 +72,11 @@ export default function App() {
     //   Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
     // };
   }, []);
+
+  async function checkLogin() {
+    let number = await AsyncStorage.getItem("number");
+    setNumber(number);
+  }
 
   async function checkRegistry() {
     console.log(await TaskManager.isTaskRegisteredAsync(LOCATION_TASK_NAME));

@@ -14,19 +14,96 @@ import {
 // import LottieView from "lottie-react-native";
 import colors from "./components/colors";
 import OtpInputs from "react-native-otp-inputs";
+import { sendSms } from "./components/hitApi";
+import Toast from "react-native-toast-message";
+import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [number, setNumber] = React.useState<string>("");
   const [otp, setOtp] = React.useState({
     first: "",
     second: "",
     third: "",
     fourth: "",
   });
+  const [sentOtp, setSentOtp] = React.useState<number | null>(null);
   useEffect(() => {
     console.log("OTP", otp.first + otp.second + otp.third + otp.fourth);
   }, [otp]);
 
+  async function validateNumber() {
+    console.log("Number", number);
+    if (number.length === 10) {
+      Toast.show({
+        type: "success",
+        position: "top",
+        text1: "OTP Sent Successfully",
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
+
+      let { sendOtp, success } = await sendSms({ phone: number });
+      console.log("OTP", sendOtp);
+      if (success) {
+        setSentOtp(sendOtp);
+        setModalVisible(true);
+      } else {
+        Toast.show({
+          type: "error",
+          position: "top",
+          text1: "OTP Not Sent! Incorrect Phone Number",
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      }
+      console.log("OTP", otp);
+    } else {
+      Toast.show({
+        type: "error",
+        position: "top",
+        text1: "Please Enter a valid Number",
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
+    }
+  }
+  async function validateOtp() {
+    console.log("OTP", otp.first + otp.second + otp.third + otp.fourth);
+    let otpValue = otp.first + otp.second + otp.third + otp.fourth;
+    if (otpValue == sentOtp) {
+      Toast.show({
+        type: "success",
+        position: "top",
+        text1: "OTP Verified Successfully",
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
+      setModalVisible(false);
+      await AsyncStorage.setItem("number", number);
+      router.push("/screens/trackScreen");
+      // await AsyncStorage.setItem("number", number);
+    } else {
+      Toast.show({
+        type: "error",
+        position: "top",
+        text1: "OTP Verification Failed",
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
+    }
+  }
   return (
     <View
       style={{
@@ -150,6 +227,11 @@ const Login = () => {
                 }}
               >
                 <TextInput
+                  keyboardType="numeric"
+                  maxLength={10}
+                  onChangeText={(value) => {
+                    setNumber(value);
+                  }}
                   style={{
                     marginLeft: 5,
                     height: 55,
@@ -194,8 +276,7 @@ const Login = () => {
               <Pressable
                 onPress={() => {
                   console.log("Hello");
-
-                  setModalVisible(true);
+                  validateNumber();
                 }}
                 style={{
                   backgroundColor: "#243142",
@@ -259,7 +340,7 @@ const Login = () => {
                     textAlign: "center",
                   }}
                 >
-                  We have sent an OTP to this phone number +91 9876543210
+                  We have sent an OTP to this phone number +977 {number}
                 </Text>
               </View>
               <View
@@ -419,8 +500,7 @@ const Login = () => {
                 <Pressable
                   onPress={() => {
                     console.log("Hello");
-
-                    setModalVisible(false);
+                    validateOtp();
                   }}
                   style={{
                     backgroundColor: "#243142",
