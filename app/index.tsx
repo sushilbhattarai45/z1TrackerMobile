@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -16,6 +16,16 @@ import OtpInputs from "react-native-otp-inputs";
 
 const Login = () => {
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [otp, setOtp] = React.useState({
+    first: "",
+    second: "",
+    third: "",
+    fourth: "",
+  });
+  useEffect(() => {
+    console.log("OTP", otp.first + otp.second + otp.third + otp.fourth);
+  }, [otp]);
+
   return (
     <View
       style={{
@@ -214,7 +224,6 @@ const Login = () => {
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
             setModalVisible(!modalVisible);
           }}
         >
@@ -266,6 +275,50 @@ const Login = () => {
                   }}
                 >
                   <TextInput
+                    value={otp.first}
+                    maxLength={1}
+                    onChangeText={(value) => {
+                      setOtp({
+                        ...otp,
+                        first: value,
+                      });
+                      if (value.length > 0) {
+                        this.secondInput.focus();
+                      }
+                    }}
+                    keyboardType="numeric"
+                    style={{
+                      height: 55,
+                      borderColor: "gray",
+                      borderWidth: 1,
+                      padding: 10,
+                      paddingLeft: 20,
+                      borderRadius: 10,
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    flex: 0.2,
+                    marginLeft: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextInput
+                    value={otp.second}
+                    ref={(input) => {
+                      this.secondInput = input;
+                    }}
+                    onChangeText={(value) => {
+                      setOtp({
+                        ...otp,
+                        second: value,
+                      });
+                      if (value.length > 0) {
+                        this.thirdInput.focus();
+                      }
+                    }}
                     maxLength={1}
                     keyboardType="numeric"
                     style={{
@@ -287,6 +340,20 @@ const Login = () => {
                   }}
                 >
                   <TextInput
+                    value={otp.third}
+                    ref={(input) => {
+                      this.thirdInput = input;
+                    }}
+                    onChangeText={(value) => {
+                      setOtp({
+                        ...otp,
+                        third: value,
+                      });
+
+                      if (value.length > 0) {
+                        this.lastInput.focus();
+                      }
+                    }}
                     maxLength={1}
                     keyboardType="numeric"
                     style={{
@@ -308,27 +375,19 @@ const Login = () => {
                   }}
                 >
                   <TextInput
-                    maxLength={1}
-                    keyboardType="numeric"
-                    style={{
-                      height: 55,
-                      borderColor: "gray",
-                      borderWidth: 1,
-                      padding: 10,
-                      paddingLeft: 20,
-                      borderRadius: 10,
+                    value={otp.fourth}
+                    ref={(input) => {
+                      this.lastInput = input;
                     }}
-                  />
-                </View>
-                <View
-                  style={{
-                    flex: 0.2,
-                    marginLeft: 10,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <TextInput
+                    onChangeText={(value) => {
+                      setOtp({
+                        ...otp,
+                        fourth: value,
+                      });
+                      if (value.length > 0) {
+                        // this.nextInput.focus();
+                      }
+                    }}
                     maxLength={1}
                     keyboardType="numeric"
                     style={{
