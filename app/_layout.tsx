@@ -36,6 +36,7 @@ export default function RootLayout() {
         headerShown: false,
       }}
     >
+      <Stack.Screen name="index" />
       <Stack.Screen name="screens/auth/login" />
       {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
       <Stack.Screen name="+not-found" />

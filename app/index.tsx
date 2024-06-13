@@ -4,11 +4,18 @@ import {
   View,
   Text,
   TextInput,
+  Alert,
   Image,
+  Modal,
   Pressable,
+  Dimensions,
 } from "react-native";
+// import LottieView from "lottie-react-native";
+import colors from "./components/colors";
+import OtpInputs from "react-native-otp-inputs";
 
 const Login = () => {
+  const [modalVisible, setModalVisible] = React.useState(false);
   return (
     <View
       style={{
@@ -17,8 +24,8 @@ const Login = () => {
     >
       <View
         style={{
-          backgroundColor: "red",
-          flex: 1,
+          backgroundColor: colors.red,
+          flex: 100,
 
           display: "flex",
           flexDirection: "column",
@@ -27,18 +34,26 @@ const Login = () => {
         <View
           style={{
             justifyContent: "center",
-            backgroundColor: "red",
             flex: 0.6,
           }}
         >
-          <Text>Hello</Text>
+          {/* <LottieView
+            source={require("../assets/lottie/bikemoving.json")}
+            autoPlay
+            loop
+            style={{
+              width: 300,
+              height: 300,
+              alignSelf: "center",
+            }}
+          /> */}
         </View>
 
         <View
           style={{
             flex: 0.4,
             padding: 20,
-            backgroundColor: "white",
+            backgroundColor: colors.white,
             borderTopLeftRadius: 30,
             borderTopRightRadius: 30,
           }}
@@ -51,6 +66,7 @@ const Login = () => {
             <Text
               style={{
                 fontSize: 18,
+                color: colors.darkGrey,
                 fontWeight: "900",
               }}
             >
@@ -65,7 +81,7 @@ const Login = () => {
             <Text
               style={{
                 fontSize: 14,
-                color: "gray",
+                color: colors.grey,
                 fontWeight: "600",
               }}
             >
@@ -83,6 +99,7 @@ const Login = () => {
               style={{
                 fontSize: 12,
                 color: "gray",
+                fontWeight: "500",
               }}
             >
               We will send you a One Time Password to the number!
@@ -90,7 +107,7 @@ const Login = () => {
           </View>
           <View
             style={{
-              marginTop: 20,
+              marginTop: 10,
               display: "flex",
               justifyContent: "space-between",
               flexDirection: "row",
@@ -98,8 +115,8 @@ const Login = () => {
           >
             <View
               style={{
-                width: 50,
-                height: 50,
+                width: 55,
+                height: 55,
                 borderRadius: 5,
                 borderColor: "gray",
                 borderWidth: 1,
@@ -121,8 +138,8 @@ const Login = () => {
             >
               <TextInput
                 style={{
-                  marginLeft: 10,
-                  height: 50,
+                  marginLeft: 5,
+                  height: 55,
                   borderColor: "gray",
                   borderWidth: 1,
                   padding: 10,
@@ -141,11 +158,19 @@ const Login = () => {
             <Text
               style={{
                 fontSize: 12,
-                color: "gray",
+                color: colors.grey,
               }}
             >
-              By continuing, you are indicating that you agree to the Terms and
-              Conditions and Privacy Policy
+              By continuing, you are indicating that you agree to the
+              <Text
+                style={{
+                  color: colors.driveGreen,
+                  fontWeight: "600",
+                }}
+              >
+                {" "}
+                Terms and Conditions and Privacy Policy
+              </Text>
             </Text>
           </View>
           <View
@@ -154,12 +179,17 @@ const Login = () => {
             }}
           >
             <Pressable
+              onPress={() => {
+                console.log("Hello");
+
+                setModalVisible(true);
+              }}
               style={{
                 backgroundColor: "#243142",
                 padding: 10,
                 height: 52,
                 marginTop: 10,
-                marginHorizontal: 10,
+                marginHorizontal: 5,
                 borderRadius: 10,
                 display: "flex",
                 justifyContent: "center",
@@ -178,10 +208,231 @@ const Login = () => {
           </View>
         </View>
       </View>
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View
+                style={{
+                  flex: 0.3,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: colors.black,
+                    fontWeight: "800",
+                  }}
+                >
+                  Enter the OTP
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    marginTop: 10,
+                    color: colors.grey,
+                    fontWeight: "500",
+                    textAlign: "center",
+                  }}
+                >
+                  We have sent an OTP to this phone number +91 9876543210
+                </Text>
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flex: 0.4,
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                }}
+              >
+                <View
+                  style={{
+                    flex: 0.2,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextInput
+                    maxLength={1}
+                    keyboardType="numeric"
+                    style={{
+                      height: 55,
+                      borderColor: "gray",
+                      borderWidth: 1,
+                      padding: 10,
+                      paddingLeft: 20,
+                      borderRadius: 10,
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    flex: 0.2,
+                    marginLeft: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextInput
+                    maxLength={1}
+                    keyboardType="numeric"
+                    style={{
+                      height: 55,
+                      borderColor: "gray",
+                      borderWidth: 1,
+                      padding: 10,
+                      paddingLeft: 20,
+                      borderRadius: 10,
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    flex: 0.2,
+                    marginLeft: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextInput
+                    maxLength={1}
+                    keyboardType="numeric"
+                    style={{
+                      height: 55,
+                      borderColor: "gray",
+                      borderWidth: 1,
+                      padding: 10,
+                      paddingLeft: 20,
+                      borderRadius: 10,
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    flex: 0.2,
+                    marginLeft: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextInput
+                    maxLength={1}
+                    keyboardType="numeric"
+                    style={{
+                      height: 55,
+                      borderColor: "gray",
+                      borderWidth: 1,
+                      padding: 10,
+                      paddingLeft: 20,
+                      borderRadius: 10,
+                    }}
+                  />
+                </View>
+              </View>
+
+              <View
+                style={{
+                  display: "flex",
+                  flex: 0.3,
+                  width: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Pressable
+                  onPress={() => {
+                    console.log("Hello");
+
+                    setModalVisible(false);
+                  }}
+                  style={{
+                    backgroundColor: "#243142",
+                    padding: 10,
+                    width: "90%",
+                    height: 52,
+                    marginTop: 10,
+                    borderRadius: 10,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: 18,
+                    }}
+                  >
+                    Verify
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  centeredView: {
+    justifyContent: "center",
+    alignSelf: "center",
+
+    flex: 1,
+    alignItems: "center",
+  },
+  modalView: {
+    margin: 20,
+    width: Dimensions.get("window").width - 50,
+    height: 300,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+});
 
 export default Login;
