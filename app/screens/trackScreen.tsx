@@ -19,12 +19,13 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
+import * as Updates from "expo-updates";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { WebView } from "react-native-webview";
 import moment from "moment";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 
 import LottieView from "lottie-react-native";
 import colors from "../components/colors";
@@ -40,20 +41,35 @@ TaskManager.defineTask(
       console.log(error);
       return;
     }
-    if (data) {
-      const { locations } = data;
-      console.log(locations[0]);
+    const { locations } = data;
+    console.log("Location Task");
+    // console.log(locations[0]);
+    try {
       sendMyLocation({
         locations: locations[0],
       });
+    } catch (err) {
+      console.log(err);
     }
   }
 );
 
 const sendMyLocation = async (data: { locations: any }) => {
   try {
+    console.log("Sending location");
     let num = await AsyncStorage.getItem("number");
-
+    console.log(num);
+    // console.log(
+    //   process.env.EXPO_PUBLIC_URL +
+    //     "?lat=" +
+    //     data.locations.coords.latitude +
+    //     "&lon=" +
+    //     data.locations.coords.longitude +
+    //     "&timestamp=" +
+    //     Date.now() +
+    //     "&id=" +
+    //     num
+    // );
     const resp = await axios.get(
       process.env.EXPO_PUBLIC_URL +
         "?lat=" +
@@ -65,13 +81,11 @@ const sendMyLocation = async (data: { locations: any }) => {
         "&id=" +
         num
     );
+    Promise.resolve();
+
     console.log(resp.status);
-    if (resp.status === 200) {
-      await AsyncStorage.setItem(
-        "lastLocation",
-        JSON.stringify(data.locations)
-      );
-    }
+
+    await AsyncStorage.setItem("lastLocation", JSON.stringify(data.locations));
   } catch (err) {
     console.error(err);
   }
@@ -94,6 +108,16 @@ export default function App() {
   }, []);
   useEffect(() => {
     getStoredLocation();
+    let lastLocation = AsyncStorage.getItem("lastLocation");
+    AsyncStorage.getItem("lastLocation").then((data) => {
+      if (data) {
+        setCurrentCoords({
+          latitude: JSON.parse(data).coords.latitude,
+          longitude: JSON.parse(data).coords.longitude,
+        });
+        callGalliMapApi();
+      }
+    });
   }, [currentCoords?.latitude, currentCoords?.longitude]);
 
   async function getStoredLocation() {
@@ -105,7 +129,7 @@ export default function App() {
       });
       callGalliMapApi();
     }
-    console.log(currentCoords);
+    // console.log(currentCoords);
   }
 
   async function callGalliMapApi() {
@@ -113,7 +137,7 @@ export default function App() {
       lat: currentCoords.latitude,
       long: currentCoords.longitude,
     }).then((data) => {
-      console.log(data);
+      // console.log(data);
       setMyNamedLocation(data);
     });
   }
@@ -134,6 +158,9 @@ export default function App() {
       const { status: backgroundStatus } =
         await Location.requestBackgroundPermissionsAsync();
       if (backgroundStatus === "granted") {
+        if (await TaskManager.isTaskRegisteredAsync(LOCATION_TASK_NAME)) {
+          startLocation();
+        }
         console.log("permission granted");
       }
     }
@@ -154,6 +181,16 @@ export default function App() {
         notificationBody: " enabled",
         notificationColor: "#0000FF",
       },
+    });
+    Toast.show({
+      type: "success",
+      position: "top",
+      text1: "Tracking Started",
+      text2: "You are being tracked and the app will reload",
+      visibilityTime: 2000,
+      autoHide: true,
+      topOffset: 30,
+      bottomOffset: 40,
     });
   };
 
@@ -590,12 +627,12 @@ export default function App() {
                 style={{
                   marginTop: 20,
                   flex: 1,
-                  height: 200,
+                  height: 300,
                   borderRadius: 10,
                   overflow: "hidden",
                 }}
               >
-                {status === "started" ? (
+                {currentCoords?.latitude ? (
                   <MapView
                     style={{
                       width: "100%",
@@ -606,10 +643,19 @@ export default function App() {
                     initialRegion={{
                       latitude: currentCoords.latitude,
                       longitude: currentCoords.longitude,
-                      latitudeDelta: 0.0922,
-                      longitudeDelta: 0.0421,
+                      latitudeDelta: 0.00922,
+                      longitudeDelta: 0.00421,
                     }}
-                  />
+                  >
+                    <Marker
+                      coordinate={{
+                        latitude: currentCoords.latitude,
+                        longitude: currentCoords.longitude,
+                      }}
+                      title="You are here"
+                      description="Your current location"
+                    />
+                  </MapView>
                 ) : (
                   <View
                     style={{
