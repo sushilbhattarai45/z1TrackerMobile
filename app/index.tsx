@@ -26,9 +26,9 @@ const Login = () => {
   async function checkLogin() {
     let phone = await AsyncStorage.getItem("number");
     if (phone) {
-      router.navigate("/screens/trackScreen");
+      router.push("/screens/trackScreen");
     } else {
-      router.navigate("/screens/auth/login");
+      router.push("/screens/auth/login");
     }
   }
   return (

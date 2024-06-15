@@ -32,3 +32,32 @@ export const sendSms = async ({ phone }: SendSmsProps) => {
     };
   }
 };
+
+export const ReverseGeoCode = async ({
+  lat,
+  long,
+}: {
+  lat: string;
+  long: string;
+}) => {
+  let adress = [];
+  // console.log("Lat, Long", lat, long);
+  // console.log(data._j.map((vehicleData) => vehicleData?.latitude));      let url =
+  let url =
+    "https://route-init.gallimap.com/api/v1/reverse/generalReverse?accessToken=" +
+    process.env.EXPO_PUBLIC_GALLIMAPKEY +
+    "&lat=" +
+    lat +
+    "&lng=" +
+    long;
+  try {
+    let reversedata = await axios.get(url);
+    let address = await reversedata.data.data.generalName;
+
+    return address;
+    // console.log(reversedata.data);
+    // setAddress(reversedata.data);
+  } catch (e) {
+    console.log(e);
+  }
+};
