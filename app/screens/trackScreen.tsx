@@ -43,7 +43,7 @@ TaskManager.defineTask(
     }
     const { locations } = data;
     console.log("Location Task");
-    // console.log(locations[0]);
+    console.log(locations[0]);
     try {
       sendMyLocation({
         locations: locations[0],
@@ -95,6 +95,9 @@ export default function App() {
   const [status, setStatus] = useState("stopped");
   const [startTime, setStartTime] = useState<string | null>("");
   const [myNamedLocation, setMyNamedLocation] = useState<string | null>("");
+  const [locationServicesEnabled, setLocationServicesEnabled] =
+    useState<boolean>(false);
+  false;
   const [currentCoords, setCurrentCoords] = useState({
     latitude: 0,
     longitude: 0,
@@ -150,6 +153,7 @@ export default function App() {
         ? "started"
         : "stopped"
     );
+    checkIfLocationEnabled();
   }
   const requestPermissionsAsync = async () => {
     const { status: foregroundStatus } =
@@ -159,18 +163,60 @@ export default function App() {
         await Location.requestBackgroundPermissionsAsync();
       if (backgroundStatus === "granted") {
         if (await TaskManager.isTaskRegisteredAsync(LOCATION_TASK_NAME)) {
-          startLocation();
+          // startLocation();
+          await Location.enableNetworkProviderAsync();
+          // await Updates.reloadAsync();
         }
         console.log("permission granted");
       }
     }
   };
 
+  const checkIfLocationEnabled = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+
+    setLocationServicesEnabled(false); //store false into state
+    requestPermissionsAsync();
+    // console.log(await Location.isAndroidBackgroundLocationEnabled());
+    let enabled = await Location.hasServicesEnabledAsync();
+    await Location.enableNetworkProviderAsync();
+    console.log(enabled + "here"); //returns true or false
+    if (enabled === false) {
+      Toast.show({
+        type: "error",
+        position: "top",
+        text1: "Location Services Disabled",
+        text2: "Please enable location to start tracking",
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
+
+      // setLocationServicesEnabled(true); //store true into state
+    } else {
+      setLocationServicesEnabled(true);
+      Toast.show({
+        type: "success",
+        position: "top",
+        text1: "Location Services Enabled",
+        text2: "You can now start tracking",
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
+      // startLocation();
+      //store true into state
+    }
+  };
+
   const startLocation = async () => {
     // findStartTime();
-    // await AsyncStorage.setItem("startTime", Date.now().toString());
-    console.log("start location");
+
     setStatus("started");
+    console.log("Starting Location");
+    // await AsyncStorage.setItem("startTime", Date.now().toString());
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
       timeInterval: 500,
       accuracy: Location.Accuracy.Highest,
@@ -192,6 +238,7 @@ export default function App() {
       topOffset: 30,
       bottomOffset: 40,
     });
+    await Updates.reloadAsync();
   };
 
   const stopLocation = async () => {
