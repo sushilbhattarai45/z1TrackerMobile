@@ -8,7 +8,9 @@ import {
   Text,
   ScrollView,
   View,
+  BackHandler,
 } from "react-native";
+import { useFocusEffect } from "expo-router";
 import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
@@ -152,7 +154,7 @@ export default function App() {
   const [status, setStatus] = useState("stopped");
   const [bgPermission, requestBgPermission] =
     Location.useBackgroundPermissions();
-
+  const [Identifier, setIdentifier] = useState<string | null>("");
   const [fgPermission, requestFgPermission] =
     Location.useForegroundPermissions();
   const [startTime, setStartTime] = useState<string | null>("");
@@ -171,6 +173,26 @@ export default function App() {
     //   Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
     // };
   }, []);
+  useFocusEffect(() => {
+    const backAction = () => {
+      Alert.alert("Hold on!", "Are you sure you want to go back?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  });
   useEffect(() => {
     getStoredLocation();
     let lastLocation = AsyncStorage.getItem("lastLocation");
@@ -207,8 +229,11 @@ export default function App() {
     });
   }
   async function checkRegistry() {
-    console.log(await AsyncStorage.getItem("number"));
+    let num = await AsyncStorage.getItem("number");
     console.log(await TaskManager.isTaskRegisteredAsync(LOCATION_TASK_NAME));
+    if (num) {
+      setIdentifier(num);
+    }
 
     setStatus(
       (await TaskManager.isTaskRegisteredAsync(LOCATION_TASK_NAME))
@@ -568,7 +593,7 @@ export default function App() {
                           padding: 5,
                         }}
                       >
-                        Identifier: 9846761072{" "}
+                        Identifier: {Identifier || "Not Available"}
                       </Text>
                     </View>
                     <View

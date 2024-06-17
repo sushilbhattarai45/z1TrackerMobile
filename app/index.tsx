@@ -1,9 +1,11 @@
 import React, { useRef, useEffect } from "react";
+import { useFocusEffect } from "expo-router";
 import {
   StyleSheet,
   View,
   Text,
   TextInput,
+  BackHandler,
   Alert,
   Image,
   Modal,

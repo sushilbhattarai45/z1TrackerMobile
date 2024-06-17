@@ -8,10 +8,12 @@ import {
   Image,
   Modal,
   Pressable,
+  BackHandler,
   Dimensions,
   StatusBar as StatusBarComponent,
   KeyboardAvoidingView,
 } from "react-native";
+import { useFocusEffect } from "expo-router";
 // import LottieView from "lottie-react-native";
 import colors from "../../components/colors";
 import { sendSms } from "../../components/hitApi";
@@ -34,7 +36,26 @@ const Login = () => {
   useEffect(() => {
     console.log("OTP", otp.first + otp.second + otp.third + otp.fourth);
   }, [otp]);
+  useFocusEffect(() => {
+    const backAction = () => {
+      Alert.alert("Hold on!", "Are you sure you want to go back?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
 
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  });
   async function validateNumber() {
     console.log("Number", number);
     if (number.length === 10) {
