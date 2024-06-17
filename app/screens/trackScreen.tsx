@@ -26,6 +26,7 @@ import { router } from "expo-router";
 import { WebView } from "react-native-webview";
 import moment from "moment";
 import MapView, { Marker } from "react-native-maps";
+import NetInfo from "@react-native-community/netinfo";
 
 import LottieView from "lottie-react-native";
 import colors from "../components/colors";
@@ -35,7 +36,7 @@ const LOCATION_TASK_NAME = "background-location-task";
 
 TaskManager.defineTask(
   LOCATION_TASK_NAME,
-  ({ data, error }: { data: any; error: any }) => {
+  async ({ data, error }: { data: any; error: any }) => {
     console.log("Task Defined");
     if (error) {
       console.log(error);
@@ -44,20 +45,75 @@ TaskManager.defineTask(
     const { locations } = data;
     console.log("Location Task");
     console.log(locations[0]);
-    try {
-      sendMyLocation({
-        locations: locations[0],
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    NetInfo.fetch().then(async (state) => {
+      if (state.isConnected && state.isInternetReachable) {
+        let inStack = await AsyncStorage.getItem("inSTACK");
+        if (inStack === "true") {
+          let stack = await AsyncStorage.getItem("stackedLocations");
+          if (stack) {
+            // stackLocation(locations[0]);
+            let data = JSON.parse(stack);
+            await Promise.all(
+              data.map(async (address: any) => {
+                try {
+                  await sendMyLocation({
+                    locations: JSON.parse(address),
+                  });
+                } catch (err) {
+                  console.log(err);
+                }
+              })
+            );
+          }
+
+          await AsyncStorage.removeItem("stackedLocations");
+        } else {
+          console.log("I am here");
+          try {
+            sendMyLocation({
+              locations: locations[0],
+            });
+          } catch (err) {
+            console.log(err);
+          }
+        }
+
+        try {
+          sendMyLocation({
+            locations: locations[0],
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        stackLocation(locations[0]);
+      }
+    });
   }
 );
+const stackLocation = async (data: any) => {
+  await AsyncStorage.setItem("inSTACK", "true");
+  console.log("Stacking location");
+  let num = await AsyncStorage.getItem("number");
+  let stack = await AsyncStorage.getItem("stackedLocations");
+  // alert(JSON.parse(stack));
+  if (stack) {
+    let newData = JSON.parse(stack);
+    // alert(JSON.stringify(data));
+    newData.push(JSON.stringify(data));
+    await AsyncStorage.setItem("stackedLocations", JSON.stringify(newData));
+  } else {
+    let stack = [];
+    stack.push({
+      data,
+    });
+    await AsyncStorage.setItem("stackedLocations", JSON.stringify(stack));
+  }
+};
 
 const sendMyLocation = async (data: { locations: any }) => {
   try {
     console.log("Sending location");
-    alert("Sending location");
     let num = await AsyncStorage.getItem("number");
     console.log(num);
     // console.log(
@@ -226,7 +282,7 @@ export default function App() {
 
     // await AsyncStorage.setItem("startTime", Date.now().toString());
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-      timeInterval: 500,
+      timeInterval: 5000,
       accuracy: Location.Accuracy.Highest,
       distanceInterval: 1,
       deferredUpdatesInterval: 0,
