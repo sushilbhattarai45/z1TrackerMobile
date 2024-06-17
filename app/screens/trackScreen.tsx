@@ -57,6 +57,7 @@ TaskManager.defineTask(
 const sendMyLocation = async (data: { locations: any }) => {
   try {
     console.log("Sending location");
+    alert("Sending location");
     let num = await AsyncStorage.getItem("number");
     console.log(num);
     // console.log(
@@ -93,6 +94,11 @@ const sendMyLocation = async (data: { locations: any }) => {
 
 export default function App() {
   const [status, setStatus] = useState("stopped");
+  const [bgPermission, requestBgPermission] =
+    Location.useBackgroundPermissions();
+
+  const [fgPermission, requestFgPermission] =
+    Location.useForegroundPermissions();
   const [startTime, setStartTime] = useState<string | null>("");
   const [myNamedLocation, setMyNamedLocation] = useState<string | null>("");
   const [locationServicesEnabled, setLocationServicesEnabled] =
@@ -174,7 +180,8 @@ export default function App() {
 
   const checkIfLocationEnabled = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
-
+    requestBgPermission();
+    requestFgPermission();
     setLocationServicesEnabled(false); //store false into state
     requestPermissionsAsync();
     // console.log(await Location.isAndroidBackgroundLocationEnabled());
@@ -216,6 +223,7 @@ export default function App() {
 
     setStatus("started");
     console.log("Starting Location");
+
     // await AsyncStorage.setItem("startTime", Date.now().toString());
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
       timeInterval: 500,
@@ -238,6 +246,7 @@ export default function App() {
       topOffset: 30,
       bottomOffset: 40,
     });
+
     await Updates.reloadAsync();
   };
 
