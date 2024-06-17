@@ -282,7 +282,7 @@ export default function App() {
 
     // await AsyncStorage.setItem("startTime", Date.now().toString());
     await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-      timeInterval: 5000,
+      timeInterval: 2000,
       accuracy: Location.Accuracy.Highest,
       distanceInterval: 1,
       deferredUpdatesInterval: 0,
@@ -302,8 +302,9 @@ export default function App() {
       topOffset: 30,
       bottomOffset: 40,
     });
-
-    await Updates.reloadAsync();
+    setTimeout(async () => {
+      await Updates.reloadAsync();
+    }, 3000);
   };
 
   const stopLocation = async () => {
@@ -798,7 +799,7 @@ export default function App() {
                         textAlign: "center",
                       }}
                     >
-                      Start tracking to see your location on the map
+                      You will see the map here when we are ready.
                     </Text>
                   </View>
                 )}

@@ -9,6 +9,7 @@ import {
   Modal,
   Pressable,
   Dimensions,
+  StatusBar as StatusBarComponent,
   KeyboardAvoidingView,
 } from "react-native";
 // import LottieView from "lottie-react-native";
@@ -17,7 +18,9 @@ import { sendSms } from "../../components/hitApi";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import LottieView from "lottie-react-native";
+import SvgComponent from "@/app/components/svg/loginSvg";
+import { StatusBar } from "expo-status-bar";
 const Login = () => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [number, setNumber] = React.useState<string>("");
@@ -110,10 +113,11 @@ const Login = () => {
         flex: 1,
       }}
     >
+      <StatusBar backgroundColor={colors.black} />
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
         <View
           style={{
-            backgroundColor: colors.red,
+            backgroundColor: colors.white,
             flex: 1,
 
             display: "flex",
@@ -126,24 +130,66 @@ const Login = () => {
               flex: 0.6,
             }}
           >
+            <Image
+              source={require("../../../assets/images/z1-01.png")}
+              style={{
+                alignSelf: "center",
+                resizeMode: "contain",
+                width: 200,
+                height: 60,
+                marginTop: 50,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 12,
+                color: colors.grey,
+                fontWeight: "900",
+                textAlign: "center",
+              }}
+            >
+              Control and Track Your Vehicle Seamlessly
+            </Text>
+            <SvgComponent />
+            <Text
+              style={{
+                fontSize: 14,
+                color: colors.grey,
+                fontWeight: "900",
+                textAlign: "center",
+                marginTop: 20,
+              }}
+            >
+              Please Login to Z1 Tracker Client App
+            </Text>
             {/* <LottieView
-            source={require("../assets/lottie/bikemoving.json")}
-            autoPlay
-            loop
-            style={{
-              width: 300,
-              height: 300,
-              alignSelf: "center",
-            }}
-          /> */}
+              source={require("../../../assets/lottie/loginLottie.json")}
+              autoPlay
+              loop
+              style={{
+                width: 300,
+                height: 300,
+                alignSelf: "center",
+              }}
+            /> */}
           </View>
 
           <View
             style={{
               opacity: modalVisible ? 0.8 : 1,
               flex: 0.4,
+              elevation: 3,
+
+              shadowColor: colors.driveGreen,
+              shadowOffset: {
+                width: 1,
+                height: 2,
+              },
+              shadowOpacity: 1,
+              shadowRadius: 4,
+
               padding: 20,
-              backgroundColor: colors.white,
+              // backgroundColor: colors.white,
               borderTopLeftRadius: 30,
               borderTopRightRadius: 30,
             }}

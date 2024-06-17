@@ -16,6 +16,7 @@ import colors from "./components/colors";
 import { sendSms } from "./components/hitApi";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
+import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
@@ -26,9 +27,13 @@ const Login = () => {
   async function checkLogin() {
     let phone = await AsyncStorage.getItem("number");
     if (phone) {
-      router.push("/screens/trackScreen");
+      setTimeout(() => {
+        router.push("/screens/trackScreen");
+      }, 4000);
     } else {
-      router.push("/screens/auth/login");
+      setTimeout(() => {
+        router.push("/screens/auth/login");
+      }, 4000);
     }
   }
   return (
@@ -40,7 +45,88 @@ const Login = () => {
         flex: 1,
       }}
     >
-      <Text>Splash Screen</Text>
+      <View
+        style={{
+          flex: 1,
+          display: "flex",
+          width: "100%",
+          backgroundColor: colors.white,
+        }}
+      >
+        <View
+          style={{
+            flex: 0.7,
+            alignContent: "center",
+            justifyContent: "center",
+          }}
+        >
+          <View>
+            <Image
+              source={require("../assets/images/z1-01.png")}
+              style={{
+                resizeMode: "contain",
+                width: 250,
+                height: 100,
+                alignSelf: "center",
+                marginTop: 50,
+              }}
+            />
+          </View>
+          <View>
+            <Text
+              style={{
+                color: colors.grey,
+                fontSize: 12,
+                textAlign: "center",
+                fontWeight: "bold",
+                // marginTop: 20,
+              }}
+            >
+              Control and Track Your Vehicle Seamlessly
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 0.3,
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            marginBottom: 50,
+          }}
+        >
+          <LottieView
+            source={require("../assets/lottie/loadLottie.json")}
+            autoPlay
+            loop
+            style={{ width: 50, height: 50 }}
+          />
+
+          <View>
+            <Text
+              style={{
+                color: colors.grey,
+                fontSize: 12,
+                textAlign: "center",
+                fontWeight: "bold",
+                // marginTop: 20,
+              }}
+            >
+              A Product of Z1 Technologies & Trade Pvt. Ltd.{"\n"}
+              <Text
+                style={{
+                  color: colors.driveGreen,
+
+                  // marginTop: 20,
+                }}
+              >
+                Client App
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
