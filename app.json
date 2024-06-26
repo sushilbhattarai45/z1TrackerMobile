@@ -1,29 +1,21 @@
 {
   "expo": {
-    "name": "z1Tracker-client",
+    "name": "Z1 Tracker Client",
     "slug": "z1Tracker-client",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/playstore.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 1,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBXr9t0F7gkAedIJLC2pIn_sae1iGSDLmM"
         }
-      },
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
       },
       "permissions": [
         "ACCESS_FINE_LOCATION",
@@ -73,14 +65,14 @@
         "origin": false
       },
       "eas": {
-        "projectId": "5820e2bc-ca40-457c-9ecb-85d7da411f5a"
+        "projectId": "5a5230a0-7026-47a2-b454-3e21c2d358f3"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/5820e2bc-ca40-457c-9ecb-85d7da411f5a"
+      "url": "https://u.expo.dev/5a5230a0-7026-47a2-b454-3e21c2d358f3"
     }
   }
 }

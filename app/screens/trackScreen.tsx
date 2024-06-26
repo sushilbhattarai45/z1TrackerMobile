@@ -13,7 +13,7 @@ import {
 import { useFocusEffect } from "expo-router";
 import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   Entypo,
   FontAwesome6,
@@ -21,6 +21,7 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
+import AppContext from "../components/Context/context";
 import * as Updates from "expo-updates";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -118,17 +119,17 @@ const sendMyLocation = async (data: { locations: any }) => {
     console.log("Sending location");
     let num = await AsyncStorage.getItem("number");
     console.log(num);
-    // console.log(
-    //   process.env.EXPO_PUBLIC_URL +
-    //     "?lat=" +
-    //     data.locations.coords.latitude +
-    //     "&lon=" +
-    //     data.locations.coords.longitude +
-    //     "&timestamp=" +
-    //     Date.now() +
-    //     "&id=" +
-    //     num
-    // );
+    console.log(
+      process.env.EXPO_PUBLIC_URL +
+        "?lat=" +
+        data.locations.coords.latitude +
+        "&lon=" +
+        data.locations.coords.longitude +
+        "&timestamp=" +
+        Date.now() +
+        "&id=" +
+        num
+    );
     const resp = await axios.get(
       process.env.EXPO_PUBLIC_URL +
         "?lat=" +
@@ -151,6 +152,7 @@ const sendMyLocation = async (data: { locations: any }) => {
 };
 
 export default function App() {
+  const { hasCompany, companyInfo } = useContext(AppContext);
   const [status, setStatus] = useState("stopped");
   const [bgPermission, requestBgPermission] =
     Location.useBackgroundPermissions();
@@ -458,7 +460,7 @@ export default function App() {
               style={{
                 flex: 0.2,
                 width: "100%",
-                height: 100,
+                height: 120,
                 marginTop: 10,
                 borderRadius: 10,
                 alignContent: "center",
@@ -468,7 +470,165 @@ export default function App() {
                 backgroundColor: colors.white,
               }}
             >
-              <WebView
+              <View
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  alignSelf: "center",
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  elevation: 5,
+                  shadowColor: colors.black,
+                  backgroundColor: colors.white,
+                }}
+              >
+                <View
+                  style={{
+                    width: "95%",
+                    height: "90%",
+                    alignSelf: "center",
+                    borderRadius: 10,
+                    overflow: "hidden",
+                    justifyContent: "center",
+                    // alignItems: "center",
+                    elevation: 5,
+                    shadowColor: colors.black,
+                    backgroundColor: colors.white,
+                  }}
+                >
+                  <View
+                    style={{
+                      padding: 10,
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          lineHeight: 25,
+                          fontWeight: "bold",
+                          color: colors.black,
+                          padding: 5,
+                        }}
+                      >
+                        You are being Tracked By
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        padding: 5,
+                        flexDirection: "column",
+                      }}
+                    >
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Ionicons name="time" size={14} color={colors.purple} />
+
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            marginLeft: 6,
+                            // lineHeight: 25,
+                            fontWeight: "bold",
+                            color: colors.grey,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontWeight: "600",
+                            }}
+                          >
+                            Name{" "}
+                          </Text>
+                          :{" "}
+                          {hasCompany
+                            ? companyInfo?.name
+                            : "You are not being tracked by anyone"}{" "}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Entypo
+                          name="location-pin"
+                          size={16}
+                          color={colors.purple}
+                        />
+                        <Text
+                          numberOfLines={1}
+                          style={{
+                            fontSize: 13,
+                            marginLeft: 6,
+                            // lineHeight: 25,
+                            color: colors.grey,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontWeight: "600",
+                            }}
+                          >
+                            Contact
+                          </Text>{" "}
+                          : {hasCompany ? companyInfo?.phone : "Not Available"}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <MaterialIcons
+                          name={
+                            status === "started"
+                              ? "signal-wifi-statusbar-4-bar"
+                              : "signal-wifi-statusbar-connected-no-internet-4"
+                          }
+                          size={16}
+                          color={colors.purple}
+                        />
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            marginLeft: 6,
+                            // lineHeight: 25,
+                            color: colors.grey,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontWeight: "600",
+                            }}
+                          >
+                            Status
+                          </Text>{" "}
+                          :{" "}
+                          {status === "started"
+                            ? "You are being tracked"
+                            : "You are not being tracked"}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              {/* <WebView
                 style={{
                   // borderRadius: 10,
                   height: 200,
@@ -479,7 +639,7 @@ export default function App() {
                 source={{
                   uri: "https://z1nepal.com/wp-content/uploads/2024/05/gif-for-app-banner.gif",
                 }}
-              />
+              /> */}
               {/* <Text
                   style={{
                     fontSize: 18,

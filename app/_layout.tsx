@@ -15,6 +15,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 import Toast from "react-native-toast-message";
+import { ContextProvider } from "./components/Context/context";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -34,18 +35,20 @@ export default function RootLayout() {
 
   return (
     <>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="index" />
-        {/* <Stack.Screen name="screens/auth/login" /> */}
-        {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen name="screens/trackScreen" />
-      </Stack>
-      <Toast />
+      <ContextProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="index" />
+          {/* <Stack.Screen name="screens/auth/login" /> */}
+          {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+          <Stack.Screen name="+not-found" />
+          <Stack.Screen name="screens/trackScreen" />
+        </Stack>
+        <Toast />
+      </ContextProvider>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useFocusEffect } from "expo-router";
 import {
   StyleSheet,
@@ -13,31 +13,93 @@ import {
   Dimensions,
   KeyboardAvoidingView,
 } from "react-native";
+import * as Battery from "expo-battery";
+
 // import LottieView from "lottie-react-native";
 import colors from "./components/colors";
 import { sendSms } from "./components/hitApi";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
+import * as Updates from "expo-updates";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  startActivityAsync,
+  ActivityAction,
+
+  //  ActivityType
+} from "expo-intent-launcher";
+
+//The main purpose of the app is to enable users to share their location seamlessly.
+// The app need to access background location so that the app can track the person even after the app is closed or terminated. All the functionalities are clear and transparent and we ask every possible permissions from the users.
 
 const Login = () => {
+  const [count, setCount] = useState(0);
   useEffect(() => {
-    checkLogin();
-  }, []);
+    async function checkLogin() {
+      let powerState = await Battery.isBatteryOptimizationEnabledAsync();
 
-  async function checkLogin() {
-    let phone = await AsyncStorage.getItem("number");
-    if (phone) {
-      setTimeout(() => {
-        router.push("/screens/trackScreen");
-      }, 4000);
-    } else {
-      setTimeout(() => {
-        router.push("/screens/auth/login");
-      }, 4000);
+      if (powerState) {
+        Toast.show({
+          type: "error",
+          position: "top",
+          text1: "Battery Restriction",
+          text2:
+            "Please turn off the battery restriction mode to continue using the app",
+          visibilityTime: 5000,
+          autoHide: true,
+        });
+        Alert.alert(
+          "Battery Restriction",
+          "Please turn off the battery restriction mode and reload the app to continue using the app",
+          [
+            {
+              text: "OK",
+              onPress: async () => {
+                await startActivityAsync(
+                  ActivityAction.IGNORE_BATTERY_OPTIMIZATION_SETTINGS
+                );
+                let powerState =
+                  await Battery.isBatteryOptimizationEnabledAsync();
+                console.log("mystate" + powerState);
+
+                Updates.reloadAsync();
+              },
+            },
+          ]
+        );
+      } else {
+        let phone = await AsyncStorage.getItem("number");
+        if (phone) {
+          setTimeout(() => {
+            router.push("/screens/trackScreen");
+          }, 4000);
+        } else {
+          setTimeout(() => {
+            router.push("/screens/auth/login");
+          }, 4000);
+        }
+      }
     }
-  }
+    checkLogin();
+  }, [count]);
+
+  useEffect(() => {
+    async function onFetchUpdateAsync() {
+      try {
+        const update = await Updates.checkForUpdateAsync();
+
+        if (update.isAvailable) {
+          await Updates.fetchUpdateAsync();
+          await Updates.reloadAsync();
+        }
+      } catch (error) {
+        // You can also add an alert() to see the error message in case of an error when fetching updates.
+        console.log(`Error fetching latest Expo update: ${error}`);
+      }
+    }
+    onFetchUpdateAsync();
+  }, []);
   return (
     <View
       style={{
@@ -84,7 +146,7 @@ const Login = () => {
                 // marginTop: 20,
               }}
             >
-              Control and Track Your Vehicle Seamlessly
+              Track Your Vehicles and Closed Ones Seamlessly
             </Text>
           </View>
         </View>
