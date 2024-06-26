@@ -70,7 +70,7 @@ export const ContextProvider = ({ children }: { children: any }) => {
     }
 
     CheckLoggedIn();
-  }, []);
+  }, [logged]);
 
   const name = "John Doe";
   return (

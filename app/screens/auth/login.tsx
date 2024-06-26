@@ -30,7 +30,7 @@ const Login = () => {
     name: string;
   }
 
-  const { name } = useContext(AppContext) as AppContextTypes;
+  const { logged, setLogged } = useContext(AppContext) as AppContextTypes;
   const [modalVisible, setModalVisible] = React.useState(false);
   const [number, setNumber] = React.useState<string>("");
   const [otp, setOtp] = React.useState({
@@ -41,7 +41,6 @@ const Login = () => {
   });
   const [sentOtp, setSentOtp] = React.useState<string | null>(null);
   useEffect(() => {
-    console.log(name);
     console.log("OTP", otp.first + otp.second + otp.third + otp.fourth);
   }, [otp]);
   useFocusEffect(() => {
@@ -71,6 +70,7 @@ const Login = () => {
       if (number == "9846761072") {
         setModalVisible(false);
         await AsyncStorage.setItem("number", number);
+        setLogged(true);
         router.push("/screens/trackScreen");
       } else {
         Toast.show({
@@ -129,6 +129,7 @@ const Login = () => {
       });
       setModalVisible(false);
       await AsyncStorage.setItem("number", number);
+      setLogged(true);
       router.push("/screens/trackScreen");
       // await AsyncStorage.setItem("number", number);
     } else {
