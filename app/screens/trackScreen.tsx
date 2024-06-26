@@ -154,10 +154,14 @@ const sendMyLocation = async (data: { locations: any }) => {
 export default function App() {
   interface contextData {
     hasCompany: boolean;
+    logged: boolean;
+    setLogged: any;
     companyInfo: any;
   }
 
-  const { hasCompany, companyInfo } = useContext(AppContext) as contextData;
+  const { hasCompany, companyInfo, logged, setLogged } = useContext(
+    AppContext
+  ) as contextData;
   const [status, setStatus] = useState("stopped");
   const [bgPermission, requestBgPermission] =
     Location.useBackgroundPermissions();
@@ -1023,6 +1027,7 @@ export default function App() {
                       await AsyncStorage.removeItem("number");
                       await AsyncStorage.removeItem("startTime");
                       await AsyncStorage.removeItem("lastLocation");
+                      setLogged(false);
                       stopLocation();
                       Toast.show({
                         type: "success",

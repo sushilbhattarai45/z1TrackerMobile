@@ -25,9 +25,11 @@ import LottieView from "lottie-react-native";
 import SvgComponent from "@/app/components/svg/loginSvg";
 import { StatusBar } from "expo-status-bar";
 import AppContext from "@/app/components/Context/context";
+import axios from "axios";
 const Login = () => {
   interface AppContextTypes {
-    name: string;
+    logged: boolean;
+    setLogged: any;
   }
 
   const { logged, setLogged } = useContext(AppContext) as AppContextTypes;
@@ -129,7 +131,13 @@ const Login = () => {
       });
       setModalVisible(false);
       await AsyncStorage.setItem("number", number);
+      let num: string = number;
       setLogged(true);
+      sendLoginDataToServer({
+        num,
+        sentOtp,
+      });
+
       router.push("/screens/trackScreen");
       // await AsyncStorage.setItem("number", number);
     } else {
@@ -144,6 +152,23 @@ const Login = () => {
       });
     }
   }
+  async function sendLoginDataToServer({
+    num,
+    sentOtp,
+  }: {
+    num: string;
+    sentOtp: string;
+  }) {
+    // let response = await axios.post(
+    //   process.env.EXPO_PUBLIC_SECONDARY_URL + "login",
+    //   {
+    //     phone,
+    //     sentOtp,
+    //   }
+    // );
+    console.log("Login Data Sent to Server");
+  }
+
   return (
     <View
       style={{
