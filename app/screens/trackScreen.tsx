@@ -152,7 +152,12 @@ const sendMyLocation = async (data: { locations: any }) => {
 };
 
 export default function App() {
-  const { hasCompany, companyInfo } = useContext(AppContext);
+  interface contextData {
+    hasCompany: boolean;
+    companyInfo: any;
+  }
+
+  const { hasCompany, companyInfo } = useContext(AppContext) as contextData;
   const [status, setStatus] = useState("stopped");
   const [bgPermission, requestBgPermission] =
     Location.useBackgroundPermissions();
