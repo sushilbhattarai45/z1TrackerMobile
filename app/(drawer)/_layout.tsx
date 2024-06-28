@@ -18,7 +18,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   return (
-    <>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer>
         <Drawer.Screen
           name="trackScreen"
@@ -29,6 +29,6 @@ export default function RootLayout() {
           }}
         />
       </Drawer>
-    </>
+    </GestureHandlerRootView>
   );
 }

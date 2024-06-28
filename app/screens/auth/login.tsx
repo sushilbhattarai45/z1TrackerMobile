@@ -133,12 +133,12 @@ const Login = () => {
       await AsyncStorage.setItem("number", number);
       let num: string = number;
       setLogged(true);
-      sendLoginDataToServer({
+      await sendLoginDataToServer({
         num,
         sentOtp,
       });
 
-      router.push("/screens/trackScreen");
+      router.push("/(drawer)/trackScreen");
       // await AsyncStorage.setItem("number", number);
     } else {
       Toast.show({
@@ -159,13 +159,16 @@ const Login = () => {
     num: string;
     sentOtp: string;
   }) {
-    // let response = await axios.post(
-    //   process.env.EXPO_PUBLIC_SECONDARY_URL + "login",
-    //   {
-    //     phone,
-    //     sentOtp,
-    //   }
-    // );
+    console.log(num, sentOtp);
+    console.log(process.env.EXPO_PUBLIC_SECONDARY_URL + "otp");
+    let response = await axios.post(
+      process.env.EXPO_PUBLIC_SECONDARY_URL + "otp",
+      {
+        mobile_Number: num,
+        oTP: sentOtp,
+      }
+    );
+    console.log(response.data);
     console.log("Login Data Sent to Server");
   }
 
