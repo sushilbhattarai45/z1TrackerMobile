@@ -369,6 +369,7 @@ export default function App() {
         <ScrollView
           style={{
             flex: 1,
+
             width: "100%",
             height: "100%",
           }}
@@ -379,7 +380,7 @@ export default function App() {
               flex: 0.1,
               width: "100%",
               height: 50,
-              marginTop: 30,
+              marginTop: 0,
               borderBottomWidth: 0.4,
               borderBottomColor: colors.grey,
 
@@ -460,6 +461,8 @@ export default function App() {
 
           <View
             style={{
+              paddingBottom: 30,
+
               width: "100%",
               paddingHorizontal: 6,
               flex: 1,
@@ -941,6 +944,7 @@ export default function App() {
               >
                 {currentCoords?.latitude ? (
                   <MapView
+                    scrollEnabled={false}
                     style={{
                       width: "100%",
                       height: "100%",

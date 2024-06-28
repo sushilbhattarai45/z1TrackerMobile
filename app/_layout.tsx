@@ -9,13 +9,14 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-
 import { useColorScheme } from "@/hooks/useColorScheme";
+import Toast from "react-native-toast-message";
+import { ContextProvider } from "./components/Context/context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Drawer } from "expo-router/drawer";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-import Toast from "react-native-toast-message";
-import { ContextProvider } from "./components/Context/context";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -33,21 +34,35 @@ export default function RootLayout() {
     return null;
   }
 
+  const Drawernav = () => {
+    return (
+      <Drawer>
+        <Drawer.Screen
+          name="screens/trackScreen"
+          options={{
+            // headerShown: false,
+            drawerLabel: "Track",
+            title: "Track Screen",
+          }}
+        />
+      </Drawer>
+    );
+  };
   return (
     <>
       <ContextProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="index" />
-          {/* <Stack.Screen name="screens/auth/login" /> */}
-          {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-          <Stack.Screen name="+not-found" />
-          <Stack.Screen name="screens/trackScreen" />
-        </Stack>
-        <Toast />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+          </Stack>
+
+          {/* </Stack> */}
+          <Toast />
+        </GestureHandlerRootView>
       </ContextProvider>
     </>
   );

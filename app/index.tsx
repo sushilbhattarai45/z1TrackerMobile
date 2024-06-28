@@ -72,7 +72,7 @@ const Login = () => {
         let phone = await AsyncStorage.getItem("number");
         if (phone) {
           setTimeout(() => {
-            router.push("/screens/trackScreen");
+            router.push("/(drawer)/trackScreen");
           }, 4000);
         } else {
           setTimeout(() => {
