@@ -159,16 +159,16 @@ const Login = () => {
     num: string;
     sentOtp: string;
   }) {
-    console.log(num, sentOtp);
+    console.log(num, sentOtp.toString());
     console.log(process.env.EXPO_PUBLIC_SECONDARY_URL + "otp");
     let response = await axios.post(
       process.env.EXPO_PUBLIC_SECONDARY_URL + "otp",
       {
         Mobile_Number: num,
-        OTP: sentOtp,
+        OTP: sentOtp.toString(),
       }
     );
-    console.log(response.data);
+    console.log(response);
     console.log("Login Data Sent to Server");
   }
 
