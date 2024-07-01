@@ -164,8 +164,8 @@ const Login = () => {
     let response = await axios.post(
       process.env.EXPO_PUBLIC_SECONDARY_URL + "otp",
       {
-        mobile_Number: num,
-        oTP: sentOtp,
+        Mobile_Number: num,
+        OTP: sentOtp,
       }
     );
     console.log(response.data);

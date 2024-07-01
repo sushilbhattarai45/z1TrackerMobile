@@ -12,18 +12,20 @@ import "react-native-reanimated";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Drawer } from "expo-router/drawer";
+import { StatusBar } from "expo-status-bar";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1, marginTop: 30 }}>
+      <StatusBar style="auto" />
       <Drawer>
         <Drawer.Screen
           name="trackScreen"
           options={{
-            // headerShown: false,
+            headerShown: false,
             drawerLabel: "Track",
             title: "Track Screen",
           }}

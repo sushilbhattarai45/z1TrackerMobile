@@ -36,6 +36,26 @@ import {
 const Login = () => {
   const [count, setCount] = useState(0);
   useEffect(() => {
+    Alert.alert(
+      "Important Notice",
+      "The app uses background location to track the location of the user even when the app is closed if you start the tracking from the app. Please enable the location permission and battery optimization to use the app seamlessly.",
+
+      [
+        {
+          text: "Cancel",
+          onPress: () => {
+            Updates.reloadAsync();
+          },
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: async () => {
+            checkLogin();
+          },
+        },
+      ]
+    );
     async function checkLogin() {
       let powerState = await Battery.isBatteryOptimizationEnabledAsync();
 
@@ -81,7 +101,6 @@ const Login = () => {
         }
       }
     }
-    checkLogin();
   }, [count]);
 
   useEffect(() => {
