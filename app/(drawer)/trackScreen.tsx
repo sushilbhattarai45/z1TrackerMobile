@@ -285,7 +285,7 @@ export default function App() {
         type: "error",
         position: "top",
         text1: "Location Services Disabled",
-        text2: "Please enable location to start tracking",
+        text2: "Please enable location!",
         visibilityTime: 2000,
         autoHide: true,
         topOffset: 30,
@@ -299,7 +299,7 @@ export default function App() {
         type: "success",
         position: "top",
         text1: "Location Services Enabled",
-        text2: "You can now start tracking",
+        text2: "You can now start",
         visibilityTime: 2000,
         autoHide: true,
         topOffset: 30,
@@ -331,8 +331,8 @@ export default function App() {
     Toast.show({
       type: "success",
       position: "top",
-      text1: "Tracking Started",
-      text2: "You are being tracked and the app will reload",
+      text1: "Started",
+      text2: "The app will reload",
       visibilityTime: 2000,
       autoHide: true,
       topOffset: 30,
@@ -562,10 +562,7 @@ export default function App() {
                           >
                             Name{" "}
                           </Text>
-                          :{" "}
-                          {hasCompany
-                            ? companyInfo?.name
-                            : "You are not being tracked by anyone"}{" "}
+                          : {hasCompany ? companyInfo?.name : "Not Started"}{" "}
                         </Text>
                       </View>
                       <View
@@ -630,10 +627,7 @@ export default function App() {
                           >
                             Status
                           </Text>{" "}
-                          :{" "}
-                          {status === "started"
-                            ? "You are being tracked"
-                            : "You are not being tracked"}
+                          : {status === "started" ? "Started" : "Not Started"}
                         </Text>
                       </View>
                     </View>
@@ -924,10 +918,7 @@ export default function App() {
                         >
                           Status
                         </Text>{" "}
-                        :{" "}
-                        {status === "started"
-                          ? "You are being tracked"
-                          : "You are not being tracked"}
+                        : {status === "started" ? "Started" : "Not Started"}
                       </Text>
                     </View>
                   </View>
