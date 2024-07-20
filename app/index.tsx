@@ -29,6 +29,7 @@ import {
 
   //  ActivityType
 } from "expo-intent-launcher";
+import * as Location from "expo-location";
 
 //The main purpose of the app is to enable users to share their location seamlessly.
 // The app need to access background location so that the app can track the person even after the app is closed or terminated. All the functionalities are clear and transparent and we ask every possible permissions from the users.
@@ -51,6 +52,9 @@ const Login = () => {
         {
           text: "OK",
           onPress: async () => {
+            const { status } =
+              await Location.requestForegroundPermissionsAsync();
+
             checkLogin();
           },
         },
@@ -165,7 +169,7 @@ const Login = () => {
                 // marginTop: 20,
               }}
             >
-              Track Your Vehicles and Closed Ones Seamlessly
+              {/* Track Your Vehicles and Closed Ones Seamlessly */}
             </Text>
           </View>
         </View>

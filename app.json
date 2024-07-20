@@ -2,7 +2,7 @@
   "expo": {
     "name": "Z1 Tracker Client",
     "slug": "z1Tracker-client",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/playstore.png",
     "scheme": "myapp",
@@ -11,7 +11,7 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 2,
+      "versionCode": 3,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBXr9t0F7gkAedIJLC2pIn_sae1iGSDLmM"
@@ -30,7 +30,7 @@
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.FOREGROUND_SERVICE_LOCATION"
       ],
-      "package": "com.zonetracker.client"
+      "package": "com.z1tracker.client"
     },
     "web": {
       "bundler": "metro",

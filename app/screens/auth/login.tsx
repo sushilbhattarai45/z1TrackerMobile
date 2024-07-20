@@ -13,6 +13,7 @@ import {
   StatusBar as StatusBarComponent,
   KeyboardAvoidingView,
   Linking,
+  ScrollView,
 } from "react-native";
 import { useFocusEffect } from "expo-router";
 // import LottieView from "lottie-react-native";
@@ -88,6 +89,7 @@ const Login = () => {
         let { success, sendOtp } = await sendSms({ phone: number });
         console.log("OTP", sendOtp);
         if (success) {
+          console.log("suvvess");
           sendOtp.toString();
           setSentOtp(sendOtp);
           setModalVisible(true);
@@ -133,10 +135,10 @@ const Login = () => {
       await AsyncStorage.setItem("number", number);
       let num: string = number;
       setLogged(true);
-      await sendLoginDataToServer({
-        num,
-        sentOtp,
-      });
+      // await sendLoginDataToServer({
+      //   num,
+      //   sentOtp,
+      // });
 
       router.push("/(drawer)/trackScreen");
       // await AsyncStorage.setItem("number", number);
@@ -179,55 +181,67 @@ const Login = () => {
       }}
     >
       <StatusBar backgroundColor={colors.black} />
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-        <View
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={{ flex: 1, justifyContent: "center", alignContent: "center" }}
+      >
+        <ScrollView
+          contentContainerStyle={{}}
           style={{
             backgroundColor: colors.white,
             flex: 1,
-
-            display: "flex",
             flexDirection: "column",
           }}
         >
           <View
             style={{
-              justifyContent: "center",
-              flex: 0.6,
+              backgroundColor: colors.white,
+              flex: 1,
+
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <Image
-              source={require("../../../assets/images/z1-01.png")}
+            <View
               style={{
-                alignSelf: "center",
-                resizeMode: "contain",
-                width: 200,
-                height: 60,
-                marginTop: 50,
-              }}
-            />
-            <Text
-              style={{
-                fontSize: 12,
-                color: colors.grey,
-                fontWeight: "900",
-                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+                flex: 0.8,
               }}
             >
-              Control and Track Your Vehicle Seamlessly
-            </Text>
-            <SvgComponent />
-            <Text
-              style={{
-                fontSize: 14,
-                color: colors.grey,
-                fontWeight: "900",
-                textAlign: "center",
-                marginTop: 20,
-              }}
-            >
-              Please Login to Z1 Tracker Client App
-            </Text>
-            {/* <LottieView
+              <Image
+                source={require("../../../assets/images/z1-01.png")}
+                style={{
+                  alignSelf: "center",
+                  resizeMode: "contain",
+                  width: 200,
+                  height: 60,
+                  marginTop: 50,
+                }}
+              />
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: colors.grey,
+                  fontWeight: "900",
+                  textAlign: "center",
+                }}
+              >
+                Control and Track Your Vehicle Seamlessly
+              </Text>
+              <SvgComponent />
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: colors.grey,
+                  fontWeight: "900",
+                  textAlign: "center",
+                  marginTop: 20,
+                }}
+              >
+                Please Login to Z1 Tracker Client App
+              </Text>
+              {/* <LottieView
               source={require("../../../assets/lottie/loginLottie.json")}
               autoPlay
               loop
@@ -237,391 +251,179 @@ const Login = () => {
                 alignSelf: "center",
               }}
             /> */}
-          </View>
+            </View>
 
-          <View
-            style={{
-              opacity: modalVisible ? 0.8 : 1,
-              flex: 0.4,
-              elevation: 3,
-
-              shadowColor: colors.driveGreen,
-              shadowOffset: {
-                width: 1,
-                height: 2,
-              },
-              shadowOpacity: 1,
-              shadowRadius: 4,
-
-              padding: 20,
-              // backgroundColor: colors.white,
-              borderTopLeftRadius: 30,
-              borderTopRightRadius: 30,
-            }}
-          >
             <View
               style={{
-                marginTop: 30,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: colors.darkGrey,
-                  fontWeight: "900",
-                }}
-              >
-                Let the Tracking Journey {"\n"}Begin!!
-              </Text>
-            </View>
-            <View
-              style={{
-                marginTop: 20,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: colors.grey,
-                  fontWeight: "600",
-                }}
-              >
-                Enter your Phone Number{" "}
-              </Text>
-            </View>
-            <View
-              style={
-                {
-                  //   marginTop: 10,
-                }
-              }
-            >
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: "gray",
-                  fontWeight: "500",
-                }}
-              >
-                We will send you a One Time Password to the number!
-              </Text>
-            </View>
-            <View
-              style={{
-                marginTop: 10,
+                marginTop: 50,
+                opacity: modalVisible ? 0.8 : 1,
+                flex: 0.6,
                 display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "row",
-              }}
-            >
-              <View
-                style={{
-                  width: 55,
-                  height: 55,
-                  borderRadius: 5,
-                  borderColor: "gray",
-                  borderWidth: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
+                elevation: 3,
+                alignSelf: "flex-end",
+                shadowColor: colors.driveGreen,
+                shadowOffset: {
+                  width: 1,
+                  height: 2,
+                },
+                shadowOpacity: 1,
+                shadowRadius: 4,
 
-                  padding: 10,
+                width: "100%", // backgroundColor: colors.white,
+                borderTopLeftRadius: 30,
+                borderTopRightRadius: 30,
+              }}
+            >
+              <View
+                style={{
+                  paddingHorizontal: 20,
+
+                  marginTop: 30,
                 }}
               >
-                <Image
-                  source={require("../../../assets/images/flag.png")}
-                  style={{ width: 30, height: 30 }}
-                />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: colors.darkGrey,
+                    fontWeight: "900",
+                  }}
+                >
+                  Let the Tracking Journey {"\n"}Begin!!
+                </Text>
               </View>
               <View
                 style={{
-                  flex: 1,
+                  paddingHorizontal: 20,
+                  marginTop: 20,
                 }}
               >
-                <TextInput
-                  keyboardType="numeric"
-                  maxLength={10}
-                  onChangeText={(value) => {
-                    setNumber(value);
-                  }}
-                  style={{
-                    marginLeft: 5,
-                    height: 55,
-                    borderColor: "gray",
-                    borderWidth: 1,
-                    padding: 10,
-                    paddingLeft: 20,
-                    borderRadius: 10,
-                  }}
-                  placeholder="Enter your Phone Number"
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                marginTop: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: colors.grey,
-                }}
-              >
-                By continuing, you are indicating that you agree to the
                 <Text
-                  onPress={() => {
-                    Linking.openURL("https://z1nepal.com/privacy-policy-2");
-                  }}
                   style={{
-                    color: colors.driveGreen,
+                    fontSize: 14,
+                    color: colors.grey,
                     fontWeight: "600",
                   }}
                 >
-                  {" "}
-                  Terms and Conditions and Privacy Policy
+                  Enter your Phone Number{" "}
                 </Text>
-              </Text>
-            </View>
-            <View
-              style={{
-                marginTop: 10,
-              }}
-            >
-              <Pressable
-                onPress={() => {
-                  console.log("Hello");
-                  validateNumber();
-                }}
-                style={{
-                  backgroundColor: "#243142",
-                  padding: 10,
-                  height: 52,
-                  marginTop: 10,
-                  marginHorizontal: 5,
-                  borderRadius: 10,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    fontSize: 18,
-                  }}
-                >
-                  Continue
-                </Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
-
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
+              </View>
               <View
                 style={{
-                  flex: 0.3,
-                  justifyContent: "center",
-                  alignItems: "center",
+                  paddingHorizontal: 20,
+
+                  //   marginTop: 10,
                 }}
               >
                 <Text
+                  numberOfLines={1}
                   style={{
-                    fontSize: 18,
-                    color: colors.black,
-                    fontWeight: "800",
+                    fontSize: 12,
+
+                    color: "gray",
+                    fontWeight: "500",
                   }}
                 >
-                  Enter the OTP
+                  We will send you a One Time Password to the number!
                 </Text>
+              </View>
+              <View
+                style={{
+                  paddingHorizontal: 20,
+
+                  marginTop: 10,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                }}
+              >
+                <View
+                  style={{
+                    width: 55,
+                    height: 55,
+                    borderRadius: 5,
+                    borderColor: "gray",
+                    borderWidth: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+
+                    padding: 10,
+                  }}
+                >
+                  <Image
+                    source={require("../../../assets/images/flag.png")}
+                    style={{ width: 30, height: 30 }}
+                  />
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                  }}
+                >
+                  <TextInput
+                    keyboardType="numeric"
+                    maxLength={10}
+                    onChangeText={(value) => {
+                      setNumber(value);
+                    }}
+                    style={{
+                      marginLeft: 5,
+                      height: 55,
+                      borderColor: "gray",
+                      borderWidth: 1,
+                      padding: 10,
+                      paddingLeft: 20,
+                      borderRadius: 10,
+                    }}
+                    placeholder="Enter your Phone Number"
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  paddingLeft: 20,
+
+                  marginTop: 10,
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 12,
-                    marginTop: 10,
                     color: colors.grey,
-                    fontWeight: "500",
-                    textAlign: "center",
                   }}
                 >
-                  We have sent an OTP to this phone number +977 {number}
+                  By continuing, you are indicating that you agree to the
+                  <Text
+                    onPress={() => {
+                      Linking.openURL("https://z1nepal.com/privacy-policy-2");
+                    }}
+                    style={{
+                      color: colors.driveGreen,
+                      fontWeight: "600",
+                    }}
+                  >
+                    {" "}
+                    Terms and Conditions and Privacy Policy
+                  </Text>
                 </Text>
               </View>
               <View
                 style={{
-                  display: "flex",
-                  flex: 0.4,
-                  width: "100%",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    flex: 0.2,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <TextInput
-                    value={otp.first}
-                    maxLength={1}
-                    onChangeText={(value) => {
-                      setOtp({
-                        ...otp,
-                        first: value,
-                      });
-                      if (value.length > 0) {
-                        this.secondInput.focus();
-                      }
-                    }}
-                    keyboardType="numeric"
-                    style={{
-                      height: 55,
-                      borderColor: "gray",
-                      borderWidth: 1,
-                      padding: 10,
-                      paddingLeft: 20,
-                      borderRadius: 10,
-                    }}
-                  />
-                </View>
-                <View
-                  style={{
-                    flex: 0.2,
-                    marginLeft: 10,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <TextInput
-                    value={otp.second}
-                    ref={(input) => {
-                      this.secondInput = input;
-                    }}
-                    onChangeText={(value) => {
-                      setOtp({
-                        ...otp,
-                        second: value,
-                      });
-                      if (value.length > 0) {
-                        this.thirdInput.focus();
-                      }
-                    }}
-                    maxLength={1}
-                    keyboardType="numeric"
-                    style={{
-                      height: 55,
-                      borderColor: "gray",
-                      borderWidth: 1,
-                      padding: 10,
-                      paddingLeft: 20,
-                      borderRadius: 10,
-                    }}
-                  />
-                </View>
-                <View
-                  style={{
-                    flex: 0.2,
-                    marginLeft: 10,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <TextInput
-                    value={otp.third}
-                    ref={(input) => {
-                      this.thirdInput = input;
-                    }}
-                    onChangeText={(value) => {
-                      setOtp({
-                        ...otp,
-                        third: value,
-                      });
+                  paddingHorizontal: 20,
 
-                      if (value.length > 0) {
-                        this.lastInput.focus();
-                      }
-                    }}
-                    maxLength={1}
-                    keyboardType="numeric"
-                    style={{
-                      height: 55,
-                      borderColor: "gray",
-                      borderWidth: 1,
-                      padding: 10,
-                      paddingLeft: 20,
-                      borderRadius: 10,
-                    }}
-                  />
-                </View>
-                <View
-                  style={{
-                    flex: 0.2,
-                    marginLeft: 10,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <TextInput
-                    value={otp.fourth}
-                    ref={(input) => {
-                      this.lastInput = input;
-                    }}
-                    onChangeText={(value) => {
-                      setOtp({
-                        ...otp,
-                        fourth: value,
-                      });
-                      if (value.length > 0) {
-                        // this.nextInput.focus();
-                      }
-                    }}
-                    maxLength={1}
-                    keyboardType="numeric"
-                    style={{
-                      height: 55,
-                      borderColor: "gray",
-                      borderWidth: 1,
-                      padding: 10,
-                      paddingLeft: 20,
-                      borderRadius: 10,
-                    }}
-                  />
-                </View>
-              </View>
-
-              <View
-                style={{
-                  display: "flex",
-                  flex: 0.3,
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  marginTop: 10,
                 }}
               >
                 <Pressable
                   onPress={() => {
                     console.log("Hello");
-                    validateOtp();
+                    validateNumber();
                   }}
                   style={{
                     backgroundColor: "#243142",
                     padding: 10,
-                    width: "90%",
                     height: 52,
                     marginTop: 10,
+                    marginHorizontal: 5,
                     borderRadius: 10,
                     display: "flex",
                     justifyContent: "center",
@@ -634,14 +436,240 @@ const Login = () => {
                       fontSize: 18,
                     }}
                   >
-                    Verify
+                    Continue
                   </Text>
                 </Pressable>
               </View>
             </View>
           </View>
-        </Modal>
-      </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+      {modalVisible ? (
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <View
+                  style={{
+                    flex: 0.3,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color: colors.black,
+                      fontWeight: "800",
+                    }}
+                  >
+                    Enter the OTP
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      marginTop: 10,
+                      color: colors.grey,
+                      fontWeight: "500",
+                      textAlign: "center",
+                    }}
+                  >
+                    We have sent an OTP to this phone number +977 {number}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    flex: 0.4,
+                    width: "100%",
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 0.2,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <TextInput
+                      value={otp.first}
+                      maxLength={1}
+                      onChangeText={(value) => {
+                        setOtp({
+                          ...otp,
+                          first: value,
+                        });
+                        if (value.length > 0) {
+                          this.secondInput.focus();
+                        }
+                      }}
+                      keyboardType="numeric"
+                      style={{
+                        height: 55,
+                        borderColor: "gray",
+                        borderWidth: 1,
+                        padding: 10,
+                        paddingLeft: 20,
+                        borderRadius: 10,
+                      }}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flex: 0.2,
+                      marginLeft: 10,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <TextInput
+                      value={otp.second}
+                      ref={(input) => {
+                        this.secondInput = input;
+                      }}
+                      onChangeText={(value) => {
+                        setOtp({
+                          ...otp,
+                          second: value,
+                        });
+                        if (value.length > 0) {
+                          this.thirdInput.focus();
+                        }
+                      }}
+                      maxLength={1}
+                      keyboardType="numeric"
+                      style={{
+                        height: 55,
+                        borderColor: "gray",
+                        borderWidth: 1,
+                        padding: 10,
+                        paddingLeft: 20,
+                        borderRadius: 10,
+                      }}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flex: 0.2,
+                      marginLeft: 10,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <TextInput
+                      value={otp.third}
+                      ref={(input) => {
+                        this.thirdInput = input;
+                      }}
+                      onChangeText={(value) => {
+                        setOtp({
+                          ...otp,
+                          third: value,
+                        });
+
+                        if (value.length > 0) {
+                          this.lastInput.focus();
+                        }
+                      }}
+                      maxLength={1}
+                      keyboardType="numeric"
+                      style={{
+                        height: 55,
+                        borderColor: "gray",
+                        borderWidth: 1,
+                        padding: 10,
+                        paddingLeft: 20,
+                        borderRadius: 10,
+                      }}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flex: 0.2,
+                      marginLeft: 10,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <TextInput
+                      value={otp.fourth}
+                      ref={(input) => {
+                        this.lastInput = input;
+                      }}
+                      onChangeText={(value) => {
+                        setOtp({
+                          ...otp,
+                          fourth: value,
+                        });
+                        if (value.length > 0) {
+                          // this.nextInput.focus();
+                        }
+                      }}
+                      maxLength={1}
+                      keyboardType="numeric"
+                      style={{
+                        height: 55,
+                        borderColor: "gray",
+                        borderWidth: 1,
+                        padding: 10,
+                        paddingLeft: 20,
+                        borderRadius: 10,
+                      }}
+                    />
+                  </View>
+                </View>
+
+                <View
+                  style={{
+                    display: "flex",
+                    flex: 0.3,
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Pressable
+                    onPress={() => {
+                      console.log("Hello");
+                      validateOtp();
+                    }}
+                    style={{
+                      backgroundColor: "#243142",
+                      padding: 10,
+                      width: "90%",
+                      height: 52,
+                      marginTop: 10,
+                      borderRadius: 10,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: 18,
+                      }}
+                    >
+                      Verify
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        </View>
+      ) : null}
     </View>
   );
 };
